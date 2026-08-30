@@ -3,6 +3,7 @@ import { Noto_Sans_KR, Oswald } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingQuickMenu from "@/components/FloatingQuickMenu";
 import { siteConfig } from "@/lib/site-config";
 
 const notoSansKR = Noto_Sans_KR({
@@ -68,6 +69,7 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <FloatingQuickMenu />
       </body>
     </html>
   );

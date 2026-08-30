@@ -1,13 +1,13 @@
+import { AnchorHTMLAttributes } from "react";
 import { siteConfig } from "@/lib/site-config";
 
-interface PhoneLinkProps {
-  className?: string;
+interface PhoneLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children?: React.ReactNode;
 }
 
-export default function PhoneLink({ className, children }: PhoneLinkProps) {
+export default function PhoneLink({ children, ...rest }: PhoneLinkProps) {
   return (
-    <a href={siteConfig.phoneHref} className={className}>
+    <a href={siteConfig.phoneHref} {...rest}>
       {children ?? siteConfig.phone}
     </a>
   );

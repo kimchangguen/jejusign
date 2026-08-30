@@ -8,7 +8,7 @@ const mapLinkHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}
 
 export default function ContactCTA() {
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section id="contact" className="bg-white py-20 md:py-28">
       <div className="container-page grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
           <p className="font-display text-xs tracking-[0.3em] text-accent">

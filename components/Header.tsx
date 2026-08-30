@@ -12,10 +12,13 @@ const navItems = [
   ...categories.map((category) => ({ slug: category.slug, name: category.name })),
 ];
 
+const SCROLL_CTA_THRESHOLD = 100;
+
 export default function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
+  const [scrolled, setScrolled] = useState(false);
 
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
@@ -29,8 +32,21 @@ export default function Header() {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > SCROLL_CTA_THRESHOLD);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-fog bg-white/95 backdrop-blur">
+    <header
+      className={`sticky top-0 z-50 border-b border-fog bg-white/95 backdrop-blur transition-shadow duration-200 ${
+        scrolled ? "shadow-sm" : ""
+      }`}
+    >
       <div className="container-page flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex flex-col leading-none">
           <span className="text-xl font-bold tracking-tight text-ink md:text-2xl">
@@ -60,11 +76,29 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <PhoneLink className="font-display hidden items-center gap-2 text-sm font-semibold tracking-wide text-ink md:flex">
-            <span aria-hidden className="text-accent">●</span>
+          <PhoneLink
+            aria-label="전화하기"
+            aria-hidden={!scrolled}
+            tabIndex={scrolled ? 0 : -1}
+            className={`font-display hidden items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-4 py-2 text-sm font-semibold tracking-wide text-ink transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex ${
+              scrolled
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-1 opacity-0"
+            }`}
+          >
+            <PhoneIcon />
             {siteConfig.phone}
           </PhoneLink>
-          <PhoneLink className="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-white md:hidden">
+          <PhoneLink
+            aria-label="전화하기"
+            aria-hidden={!scrolled}
+            tabIndex={scrolled ? 0 : -1}
+            className={`flex h-10 w-10 items-center justify-center rounded-full bg-ink text-white transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:hidden ${
+              scrolled
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-1 opacity-0"
+            }`}
+          >
             <span className="sr-only">전화 상담</span>
             <PhoneIcon />
           </PhoneLink>
