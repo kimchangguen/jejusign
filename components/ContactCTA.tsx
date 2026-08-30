@@ -1,6 +1,11 @@
 import { siteConfig } from "@/lib/site-config";
 import PhoneLink from "@/components/PhoneLink";
 
+// 주소 문자열 기반 Google Maps 연동 (API Key 불필요)
+const mapQuery = encodeURIComponent(siteConfig.address);
+const mapEmbedSrc = `https://www.google.com/maps?q=${mapQuery}&z=16&output=embed`;
+const mapLinkHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
 export default function ContactCTA() {
   return (
     <section className="bg-white py-20 md:py-28">
@@ -33,32 +38,36 @@ export default function ContactCTA() {
           </PhoneLink>
         </div>
 
-        {/* 추후 Google/Naver 지도 embed 영역 */}
-        <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border border-fog bg-paper p-10 text-center text-steel md:min-h-[380px]">
-          <MapPinIcon />
-          <p className="text-sm font-medium text-graphite">{siteConfig.address}</p>
-          <p className="text-xs text-mist">지도 영역 (추후 연동 예정)</p>
+        <div className="overflow-hidden rounded-2xl border border-fog bg-paper">
+          <div className="relative aspect-[4/3] w-full sm:aspect-[16/10] lg:aspect-auto lg:h-[320px]">
+            <iframe
+              src={mapEmbedSrc}
+              title={`광명광고 위치 - ${siteConfig.address}`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
+
+          <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+            <div>
+              <p className="text-base font-bold text-ink">{siteConfig.name}</p>
+              <p className="mt-1 text-sm text-steel">{siteConfig.address}</p>
+              <PhoneLink className="font-display mt-1 block text-sm font-semibold text-ink hover:text-accent">
+                {siteConfig.phone}
+              </PhoneLink>
+            </div>
+            <a
+              href={mapLinkHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-ink px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-white"
+            >
+              Google 지도에서 보기
+            </a>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function MapPinIcon() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
   );
 }
