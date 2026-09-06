@@ -7,41 +7,39 @@ import { siteConfig } from "@/lib/site-config";
 const quickMenuItems = [
   {
     key: "call",
-    label: "전화",
     ariaLabel: "전화하기",
     href: siteConfig.phoneHref,
     icon: PhoneIcon,
   },
   {
     key: "consult",
-    label: "상담",
     ariaLabel: "상담 문의",
     href: "/#contact",
     icon: ChatIcon,
   },
   {
     key: "quote",
-    label: "견적",
     ariaLabel: "견적 문의",
-    href: "/#contact",
+    href: siteConfig.phoneHref,
     icon: QuoteIcon,
   },
 ];
 
 export default function FloatingQuickMenu() {
   return (
-    <div className="fixed bottom-5 right-4 z-30 flex flex-col gap-2.5 md:bottom-10 md:right-8 md:gap-3">
+    <div className="fixed bottom-[25px] right-[21px] z-30 flex flex-col gap-2.5 md:bottom-[45px] md:right-[37px] md:gap-3">
       {quickMenuItems.map((item) => (
         <a
           key={item.key}
           href={item.href}
           aria-label={item.ariaLabel}
-          className="flex h-12 w-12 flex-col items-center justify-center gap-0.5 rounded-full border border-fog bg-white text-ink shadow-lg transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-14 md:w-14"
+          className={`flex h-[50px] w-[50px] items-center justify-center rounded-full shadow-lg transition-all hover:scale-105 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:h-[58px] md:w-[58px] ${
+            item.key === "call"
+              ? "bg-accent text-white hover:bg-accent-dark"
+              : "border border-fog bg-white text-ink hover:text-accent"
+          }`}
         >
           <item.icon />
-          <span aria-hidden className="text-[10px] font-medium leading-none">
-            {item.label}
-          </span>
         </a>
       ))}
     </div>
@@ -51,8 +49,7 @@ export default function FloatingQuickMenu() {
 function PhoneIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      className="h-5 w-5 md:h-[22px] md:w-[22px]"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -69,8 +66,7 @@ function PhoneIcon() {
 function ChatIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      className="h-5 w-5 md:h-[22px] md:w-[22px]"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -87,8 +83,7 @@ function ChatIcon() {
 function QuoteIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      className="h-5 w-5 md:h-[22px] md:w-[22px]"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

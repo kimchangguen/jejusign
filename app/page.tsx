@@ -1,16 +1,14 @@
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import WorkGallery from "@/components/WorkGallery";
-import CompanyStrength from "@/components/CompanyStrength";
+import About from "@/components/About";
+import WorksPreview from "@/components/WorksPreview";
 import ContactCTA from "@/components/ContactCTA";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Services />
-      <WorkGallery />
-      <CompanyStrength />
+      <About />
+      <WorksPreview />
       <ContactCTA />
     </>
   );

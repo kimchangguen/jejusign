@@ -4,18 +4,20 @@
   --font-sans: var(--font-noto-sans-kr), "Malgun Gothic", system-ui, sans-serif;
   --font-display: var(--font-oswald), var(--font-noto-sans-kr), sans-serif;
 
-  --color-ink: #0d0d0d;
-  --color-charcoal: #1c1c1c;
-  --color-graphite: #333333;
-  --color-steel: #6b6b6b;
-  --color-mist: #9a9a9a;
-  --color-fog: #e7e5e2;
-  --color-paper: #f6f5f3;
+  --color-cream: #f5f1e8;
+  --color-ink: #232323;
+  --color-charcoal: #34302a;
+  --color-graphite: #3d3935;
+  --color-steel: #77736d;
+  --color-mist: #a79f92;
+  --color-fog: #e3ddcf;
+  --color-paper: #efe9de;
   --color-white: #ffffff;
-  --color-accent: #ff5722;
-  --color-accent-dark: #d8420f;
+  --color-accent: #c86f3f;
+  --color-accent-dark: #a8592f;
+  --color-deep: #36454f;
 
-  --container-page: 1280px;
+  --container-page: 1480px;
 }
 
 html {
@@ -23,7 +25,7 @@ html {
 }
 
 body {
-  background: var(--color-white);
+  background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -42,13 +44,7 @@ body {
   width: 100%;
   max-width: var(--container-page);
   margin-inline: auto;
-  padding-inline: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .container-page {
-    padding-inline: 2.5rem;
-  }
+  padding-inline: clamp(1.25rem, 4vw, 4.5rem);
 }
 
 .text-balance {

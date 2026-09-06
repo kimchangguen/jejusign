@@ -1,5 +1,6 @@
 import { Post } from "@/types/post";
 import {
+  getAllPosts as getLocalAllPosts,
   getPostsByCategory as getLocalPostsByCategory,
   getPostBySlug as getLocalPostBySlug,
   getRelatedPosts as getLocalRelatedPosts,
@@ -22,6 +23,10 @@ import {
  * banner-print) 는 WordPress 카테고리 slug 와 동일하게 맞춰서 생성하면
  * 이 파일의 fetch 로직만 채워 넣는 것으로 연동이 끝난다.
  */
+
+export async function getAllPosts(): Promise<Post[]> {
+  return getLocalAllPosts();
+}
 
 export async function getPostsByCategory(categorySlug: string): Promise<Post[]> {
   return getLocalPostsByCategory(categorySlug);

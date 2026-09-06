@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/project`, changeFrequency: "weekly", priority: 0.9 },
     ...categories.map((category) => ({
       url: `${base}/${category.slug}`,
       changeFrequency: "weekly" as const,

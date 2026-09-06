@@ -3,8 +3,12 @@ export const siteConfig = {
   nameEn: "GWANGMYEONG SIGN",
   shortEn: "JEJU SIGN",
   address: "제주특별자치도 제주시 연북로 545",
-  phone: "064-726-1301",
-  phoneHref: "tel:064-726-1301",
+  // 견적문의 / 상담 CTA 대표 번호
+  phone: "010-3699-1134",
+  phoneHref: "tel:010-3699-1134",
+  // 회사 기본정보 영역에서만 보조로 병기하는 유선번호
+  landlinePhone: "064-726-1301",
+  landlinePhoneHref: "tel:064-726-1301",
   region: "제주특별자치도",
   yearsInBusiness: "40년",
   tagline: "제주의 간판을 만들어온 40년",

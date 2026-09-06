@@ -5,7 +5,7 @@ import PhoneLink from "@/components/PhoneLink";
 
 export default function Footer() {
   return (
-    <footer className="bg-ink text-fog">
+    <footer className="bg-deep text-mist">
       <div className="container-page grid gap-10 py-14 md:grid-cols-3 md:py-20">
         <div>
           <p className="text-xl font-bold text-white">{siteConfig.name}</p>
@@ -39,6 +39,12 @@ export default function Footer() {
           </p>
           <PhoneLink className="font-display mt-3 inline-block text-lg font-semibold text-white">
             {siteConfig.phone}
+          </PhoneLink>
+          <PhoneLink
+            href={siteConfig.landlinePhoneHref}
+            className="mt-1 block text-xs text-mist hover:text-white"
+          >
+            유선 {siteConfig.landlinePhone}
           </PhoneLink>
         </div>
       </div>

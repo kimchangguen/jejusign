@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { categories } from "@/lib/categories";
 import { siteConfig } from "@/lib/site-config";
 import PhoneLink from "@/components/PhoneLink";
 
 const navItems = [
-  { slug: "", name: "HOME" },
-  ...categories.map((category) => ({ slug: category.slug, name: category.name })),
+  { key: "home", name: "HOME", href: "/" },
+  { key: "about", name: "회사소개", href: "/#about" },
+  { key: "works", name: "시공사례", href: "/project" },
 ];
 
 const SCROLL_CTA_THRESHOLD = 100;
@@ -43,64 +43,63 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-fog bg-white/95 backdrop-blur transition-shadow duration-200 ${
+      className={`sticky top-0 z-50 border-b border-fog bg-cream/90 backdrop-blur transition-shadow duration-200 ${
         scrolled ? "shadow-sm" : ""
       }`}
     >
-      <div className="container-page flex h-16 items-center justify-between md:h-20">
+      <div className="container-page flex h-[72px] items-center justify-between md:h-20">
         <Link href="/" className="flex flex-col leading-none">
-          <span className="text-xl font-bold tracking-tight text-ink md:text-2xl">
+          <span className="text-lg font-bold tracking-tight text-ink md:text-xl">
             {siteConfig.name}
           </span>
-          <span className="font-display mt-0.5 text-[10px] tracking-[0.2em] text-steel md:text-xs">
+          <span className="font-display mt-1 text-[10px] tracking-[0.22em] text-steel md:text-[11px]">
             {siteConfig.nameEn}
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
-          {navItems.map((item) => {
-            const href = item.slug ? `/${item.slug}` : "/";
-            const isActive = pathname === href;
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`text-sm font-medium tracking-wide transition-colors hover:text-accent ${
-                  isActive ? "text-accent" : "text-graphite"
-                }`}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
+        <div className="hidden items-center gap-10 lg:flex">
+          <nav className="flex items-center gap-9">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={`text-sm font-medium tracking-wide transition-colors hover:text-accent ${
+                    isActive ? "text-accent" : "text-graphite"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+            <PhoneLink
+              aria-label={`견적문의 전화하기 ${siteConfig.phone}`}
+              className="text-sm font-medium tracking-wide text-graphite transition-colors hover:text-accent"
+            >
+              견적문의
+            </PhoneLink>
+          </nav>
+        </div>
 
         <div className="flex items-center gap-4">
           <PhoneLink
-            aria-label="전화하기"
+            aria-label="전화 상담하기"
             aria-hidden={!scrolled}
             tabIndex={scrolled ? 0 : -1}
-            className={`font-display hidden items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-4 py-2 text-sm font-semibold tracking-wide text-ink transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex ${
+            className={`hidden flex-col items-start justify-center gap-0.5 rounded-xl border border-fog border-l-4 border-l-accent bg-white px-4 py-2 shadow-md transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:flex ${
               scrolled
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none -translate-y-1 opacity-0"
+                ? "translate-x-0 opacity-100"
+                : "pointer-events-none translate-x-3 opacity-0"
             }`}
           >
-            <PhoneIcon />
-            {siteConfig.phone}
-          </PhoneLink>
-          <PhoneLink
-            aria-label="전화하기"
-            aria-hidden={!scrolled}
-            tabIndex={scrolled ? 0 : -1}
-            className={`flex h-10 w-10 items-center justify-center rounded-full bg-ink text-white transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:hidden ${
-              scrolled
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none -translate-y-1 opacity-0"
-            }`}
-          >
-            <span className="sr-only">전화 상담</span>
-            <PhoneIcon />
+            <span className="flex items-center gap-1 text-[10px] font-medium tracking-wide text-steel">
+              <PhoneIcon className="h-3 w-3" />
+              전화상담
+            </span>
+            <span className="font-display text-base font-bold leading-none text-ink">
+              {siteConfig.phone}
+            </span>
           </PhoneLink>
           <button
             type="button"
@@ -129,15 +128,14 @@ export default function Header() {
       </div>
 
       {isOpen && (
-        <div className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white lg:hidden">
+        <div className="fixed inset-x-0 top-[72px] bottom-0 z-40 overflow-y-auto bg-cream lg:hidden">
           <nav className="container-page flex flex-col py-4">
             {navItems.map((item) => {
-              const href = item.slug ? `/${item.slug}` : "/";
-              const isActive = pathname === href;
+              const isActive = pathname === item.href;
               return (
                 <Link
-                  key={href}
-                  href={href}
+                  key={item.key}
+                  href={item.href}
                   className={`border-b border-fog py-4 text-lg font-medium ${
                     isActive ? "text-accent" : "text-ink"
                   }`}
@@ -146,6 +144,12 @@ export default function Header() {
                 </Link>
               );
             })}
+            <PhoneLink
+              aria-label={`견적문의 전화하기 ${siteConfig.phone}`}
+              className="border-b border-fog py-4 text-lg font-medium text-ink"
+            >
+              견적문의
+            </PhoneLink>
             <PhoneLink className="mt-6 flex items-center justify-center gap-2 rounded-full bg-ink py-4 text-base font-semibold text-white">
               <PhoneIcon />
               {siteConfig.phone} 전화하기
@@ -157,11 +161,10 @@ export default function Header() {
   );
 }
 
-function PhoneIcon() {
+function PhoneIcon({ className }: { className?: string }) {
   return (
     <svg
-      width="18"
-      height="18"
+      className={className ?? "h-[18px] w-[18px]"}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

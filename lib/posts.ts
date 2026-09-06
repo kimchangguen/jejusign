@@ -1,17 +1,16 @@
 import { Post } from "@/types/post";
 import { categories } from "@/lib/categories";
-import {
-  CATEGORY_IMAGES,
-  CATEGORY_SECONDARY_IMAGES,
-} from "@/lib/images";
+import { WORK_PHOTOS } from "@/lib/images";
 
 /**
- * Headless WordPress 연결 전, 카테고리 페이지·상세 페이지 디자인을 확인하기 위한
- * 임시 콘텐츠. 가짜 고객명·시공지역·가격·실적 수치는 포함하지 않으며,
- * 카테고리에 대한 일반 정보성 문구로만 구성한다.
+ * Headless WordPress 연결 전, 시공사례 목록·상세 페이지 디자인을 확인하기 위한
+ * 프론트엔드 개발용 샘플 콘텐츠. 가짜 고객명·시공지역 상세주소·가격·실적 수치는
+ * 포함하지 않으며, 카테고리에 대한 일반 정보성 문구로만 구성한다.
  *
  * WordPress 연동 시 이 파일은 사용하지 않고 lib/wordpress.ts 의 fetch 함수가
- * 동일한 Post 형태의 데이터를 REST API에서 가져오도록 교체한다.
+ * 동일한 Post 형태의 데이터를 REST API에서 가져오도록 교체한다. 목록/상세/페이지네이션은
+ * 모두 배열 길이를 기준으로 동적으로 계산되므로, 실제 게시물 수가 늘어나도
+ * 프론트엔드 코드를 수정할 필요가 없다.
  */
 
 const contentByCategory: Record<string, string[]> = {
@@ -47,24 +46,109 @@ const contentByCategory: Record<string, string[]> = {
   ],
 };
 
-const titleSuffixes = ["소개", "제작 안내"];
+// 카테고리별 샘플 제목 (제주 지역·업종을 다양하게 조합해 50개가 서로 달라 보이도록 구성)
+const titlesByCategory: Record<string, string[]> = {
+  "channel-sign": [
+    "제주시 LED 채널간판 제작 시공",
+    "제주 카페 전면 채널간판 교체",
+    "서귀포 매장 채널사인 신규 제작",
+    "제주시 상가 외벽 채널사인",
+    "애월 카페거리 채널간판 시공",
+    "제주 프랜차이즈 채널간판 제작",
+    "조천 음식점 채널간판 교체",
+    "제주시 병원 채널사인 제작",
+    "제주 관광업체 채널간판 시공",
+  ],
+  "led-sign": [
+    "제주 병원 LED 간판 시공",
+    "제주시 대형 옥외 LED간판 제작",
+    "서귀포 매장 LED 사인 교체",
+    "제주 편의점 LED간판 시공",
+    "한림 카페 LED 조명간판 제작",
+    "제주시 약국 LED간판 시공",
+    "제주 미용실 LED사인 제작",
+    "제주 야간 조명 LED간판 시공",
+    "구좌 펜션 LED 안내간판 제작",
+  ],
+  "blade-sign": [
+    "제주시 카페 돌출간판 제작",
+    "서귀포 상가 돌출사인 시공",
+    "제주 병원 돌출간판 교체",
+    "제주시 음식점 돌출간판 제작",
+    "애월 매장 돌출사인 시공",
+    "제주 약국 돌출간판 제작",
+    "조천 카페 돌출간판 신규 시공",
+    "제주시 미용실 돌출사인 제작",
+  ],
+  "standing-sign": [
+    "제주 매장 입간판 제작",
+    "서귀포 카페 입간판 시공",
+    "제주시 상가 안내 입간판 제작",
+    "제주 음식점 메뉴 입간판 시공",
+    "한림 펜션 안내 입간판 제작",
+    "제주 관광지 입간판 시공",
+    "조천 매장 입간판 신규 제작",
+    "제주시 병원 입간판 시공",
+  ],
+  "interior-sign": [
+    "제주 실내 아크릴 사인 시공",
+    "서귀포 매장 실내사인 제작",
+    "제주시 사무공간 실내 사인 시공",
+    "제주 카페 포인트 월사인 제작",
+    "애월 리조트 실내 안내사인 시공",
+    "제주 병원 실내 사인 제작",
+    "제주시 상가 층별 표지 시공",
+    "조천 매장 실내 사인물 제작",
+  ],
+  "banner-print": [
+    "제주 현수막 및 실사출력 시공",
+    "제주시 대형 실사출력 제작",
+    "서귀포 매장 시트지 작업",
+    "제주 행사 현수막 제작",
+    "한림 상가 실사출력 시공",
+    "제주시 매장 시트지 교체",
+    "조천 현수막 제작 및 설치",
+    "제주 관광업체 실사출력 시공",
+  ],
+};
 
-export const posts: Post[] = categories.flatMap((category) => {
-  const images = [
-    CATEGORY_IMAGES[category.slug],
-    CATEGORY_SECONDARY_IMAGES[category.slug],
-  ];
+function formatDate(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}.${m}.${d}`;
+}
 
-  return titleSuffixes.map((suffix, index) => ({
-    id: category.order * 10 + index,
-    slug: `${category.slug}-${index + 1}`,
-    categorySlug: category.slug,
-    title: `${category.name} ${suffix}`,
-    excerpt: category.description,
-    content: contentByCategory[category.slug] ?? [category.description],
-    featuredImage: images[index] ?? images[0],
-  }));
+const BASE_DATE = new Date("2026-09-06");
+const categoryCount = categories.length;
+
+export const posts: Post[] = categories.flatMap((category, categoryIndex) => {
+  const titles = titlesByCategory[category.slug] ?? [category.h1];
+  const content = contentByCategory[category.slug] ?? [category.description];
+
+  return titles.map((title, titleIndex) => {
+    // 카테고리를 인터리빙한 순번으로 날짜/이미지를 배정해, 최신순 정렬 시
+    // 카테고리가 자연스럽게 섞이고 인접 카드의 썸네일이 겹치지 않도록 한다.
+    const interleavedRank = titleIndex * categoryCount + categoryIndex;
+    const date = new Date(BASE_DATE);
+    date.setDate(date.getDate() - interleavedRank);
+
+    return {
+      id: category.order * 100 + titleIndex,
+      slug: `${category.slug}-${titleIndex + 1}`,
+      categorySlug: category.slug,
+      title,
+      excerpt: category.description,
+      content,
+      featuredImage: WORK_PHOTOS[interleavedRank % WORK_PHOTOS.length],
+      date: formatDate(date),
+    };
+  });
 });
+
+export function getAllPosts(): Post[] {
+  return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+}
 
 export function getPostsByCategory(categorySlug: string): Post[] {
   return posts.filter((post) => post.categorySlug === categorySlug);

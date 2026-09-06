@@ -8,13 +8,13 @@ const mapLinkHref = `https://www.google.com/maps/search/?api=1&query=${mapQuery}
 
 export default function ContactCTA() {
   return (
-    <section id="contact" className="bg-white py-20 md:py-28">
+    <section id="contact" className="bg-cream py-[60px] md:py-[100px] lg:py-[140px]">
       <div className="container-page grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
         <div>
           <p className="font-display text-xs tracking-[0.3em] text-accent">
             CONTACT
           </p>
-          <h2 className="text-balance mt-4 text-3xl font-bold leading-tight tracking-tight text-ink md:text-5xl">
+          <h2 className="text-balance mt-4 text-3xl font-semibold leading-tight tracking-[-0.02em] text-ink md:text-5xl">
             간판이 필요하다면
             <br />
             광명광고에 문의하세요
@@ -31,6 +31,12 @@ export default function ContactCTA() {
             <PhoneLink className="font-display block text-2xl font-bold text-ink hover:text-accent">
               {siteConfig.phone}
             </PhoneLink>
+            <PhoneLink
+              href={siteConfig.landlinePhoneHref}
+              className="block text-sm text-steel hover:text-accent"
+            >
+              유선 {siteConfig.landlinePhone}
+            </PhoneLink>
           </div>
 
           <PhoneLink className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-10 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-dark">
@@ -38,7 +44,7 @@ export default function ContactCTA() {
           </PhoneLink>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-fog bg-paper">
+        <div className="overflow-hidden rounded-2xl border border-fog bg-white">
           <div className="relative aspect-[4/3] w-full sm:aspect-[16/10] lg:aspect-auto lg:h-[320px]">
             <iframe
               src={mapEmbedSrc}
