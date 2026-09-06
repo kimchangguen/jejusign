@@ -6,7 +6,7 @@ import ProjectCard from "@/components/ProjectCard";
 import { getCategoryBySlug } from "@/lib/categories";
 import type { Post } from "@/types/post";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 24;
 
 interface ProjectGalleryProps {
   posts: Post[];
@@ -88,9 +88,9 @@ export default function ProjectGallery({ posts, initialPage }: ProjectGalleryPro
       </div>
 
       {pagePosts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-x-[26px] gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-[1440px]:grid-cols-5">
+        <div className="grid grid-cols-1 gap-x-[26px] gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {pagePosts.map((post, index) => (
-            <ProjectCard key={post.slug} post={post} priority={currentPage === 1 && index < 5} />
+            <ProjectCard key={post.slug} post={post} priority={currentPage === 1 && index < 4} />
           ))}
         </div>
       ) : (

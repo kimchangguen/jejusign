@@ -46,7 +46,7 @@ const contentByCategory: Record<string, string[]> = {
   ],
 };
 
-// 카테고리별 샘플 제목 (제주 지역·업종을 다양하게 조합해 50개가 서로 달라 보이도록 구성)
+// 카테고리별 샘플 제목 (제주 지역·업종을 다양하게 조합해 48개가 서로 달라 보이도록 구성)
 const titlesByCategory: Record<string, string[]> = {
   "channel-sign": [
     "제주시 LED 채널간판 제작 시공",
@@ -57,7 +57,6 @@ const titlesByCategory: Record<string, string[]> = {
     "제주 프랜차이즈 채널간판 제작",
     "조천 음식점 채널간판 교체",
     "제주시 병원 채널사인 제작",
-    "제주 관광업체 채널간판 시공",
   ],
   "led-sign": [
     "제주 병원 LED 간판 시공",
@@ -68,7 +67,6 @@ const titlesByCategory: Record<string, string[]> = {
     "제주시 약국 LED간판 시공",
     "제주 미용실 LED사인 제작",
     "제주 야간 조명 LED간판 시공",
-    "구좌 펜션 LED 안내간판 제작",
   ],
   "blade-sign": [
     "제주시 카페 돌출간판 제작",
