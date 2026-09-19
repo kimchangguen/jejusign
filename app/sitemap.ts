@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { categories } from "@/lib/categories";
-import { posts } from "@/lib/posts";
+import { getPortfolioSitemapEntries } from "@/lib/wordpress";
 import { siteConfig } from "@/lib/site-config";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.domain;
+  const posts = await getPortfolioSitemapEntries();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "weekly", priority: 1 },
@@ -16,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...posts.map((post) => ({
       url: `${base}/blog/${post.slug}`,
+      lastModified: post.date.replace(/\./g, "-"),
       changeFrequency: "monthly" as const,
       priority: 0.5,
     })),

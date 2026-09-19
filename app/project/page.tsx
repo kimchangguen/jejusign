@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getAllPosts } from "@/lib/wordpress";
+import { redirect } from "next/navigation";
+import { getPortfolioPage, PROJECT_PAGE_SIZE } from "@/lib/wordpress";
 import ProjectGallery from "@/components/ProjectGallery";
 import ContactCTA from "@/components/ContactCTA";
 
@@ -18,8 +19,20 @@ const WIDE_CONTAINER =
 
 export default async function ProjectPage({ searchParams }: ProjectPageProps) {
   const { page } = await searchParams;
-  const initialPage = Number(page) > 0 ? Number(page) : 1;
-  const posts = await getAllPosts();
+  const requested = Number(page);
+  const currentPage = Number.isInteger(requested) && requested > 0 ? requested : 1;
+
+  let data = null;
+  try {
+    data = await getPortfolioPage(currentPage, PROJECT_PAGE_SIZE);
+  } catch (error) {
+    console.error("[ProjectPage] WordPress portfolio fetch failed", error);
+  }
+
+  // 범위를 벗어난 페이지는 마지막 페이지로 보정한다.
+  if (data && data.total > 0 && currentPage > data.totalPages) {
+    redirect(data.totalPages === 1 ? "/project" : `/project?page=${data.totalPages}`);
+  }
 
   return (
     <>
@@ -42,7 +55,13 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
 
       <section className="bg-cream py-12 md:py-16">
         <div className={WIDE_CONTAINER}>
-          <ProjectGallery posts={posts} initialPage={initialPage} />
+          {data ? (
+            <ProjectGallery data={data} currentPage={currentPage} />
+          ) : (
+            <p className="py-20 text-center text-sm text-steel">
+              시공사례를 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.
+            </p>
+          )}
         </div>
       </section>
 

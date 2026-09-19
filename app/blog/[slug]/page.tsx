@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { posts } from "@/lib/posts";
 import { getPostBySlug, getRelatedPosts } from "@/lib/wordpress";
 import { getCategoryBySlug } from "@/lib/categories";
 import { CATEGORY_TERTIARY_IMAGES } from "@/lib/images";
@@ -14,8 +13,12 @@ interface PostPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// 새 글은 빌드 시점에 없으므로 첫 요청 때 렌더링되고, 이후 60초마다 재생성된다.
+export const revalidate = 60;
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  return posts.map((post) => ({ slug: post.slug }));
+  return [];
 }
 
 export async function generateMetadata({
@@ -70,11 +73,11 @@ export default async function PostPage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          <div className="prose-content mt-8 space-y-5 text-base leading-relaxed text-graphite md:text-lg">
-            {post.content.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
+          <div
+            className="prose-content mt-8 space-y-5 text-base leading-relaxed text-graphite md:text-lg"
+            // WordPress 본문은 lib/wordpress.ts 에서 sanitize-html 로 정제된 HTML 이다.
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           {bodyImage && (
             <div className="relative mt-10 aspect-[4/3] w-full overflow-hidden rounded-xl bg-charcoal md:aspect-[16/9]">
